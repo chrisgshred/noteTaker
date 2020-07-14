@@ -1,14 +1,17 @@
 const path = require("path");
+const express = require("express");
 
 module.exports = function (app) {
 
-// adds route for serving notes html file
-  app.get("/notes", (req, res) => {
-    res.sendFile(path.join(__dirname, "../public/notes.html"));
-  });
+    // serves all static files contained in public
+    app.use(
+        express.static(path.join(__dirname, "../public"), {
+            extensions: ["html", "js", "css"]
+        })
+    );
 
-  // If no matching route is found default to the home page
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../public/index.html"));
-  });
+    // If no matching route is found default to the home page
+    app.get("*", (req, res) => {
+        res.sendFile(path.join(__dirname, "../public/index.html"));
+    });
 };
